@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Traffic Management Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border-bottom: 1px solid #334155; text-align: left; }
+        .alert { background: rgba(239, 68, 68, 0.2); border-left: 4px solid #ef4444; padding: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <h1 id="version-badge">System Status: Stable (v1.0.0)</h1>
+    <div id="alert" class="alert">⚠️ ALERT: Wait time exceeds 120 seconds!</div>
+    
+    <div class="card">
+        <h3>Intersections Monitored</h3>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Location</th><th>Vehicles</th><th>Wait Time</th><th>Status</th></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let data = [
+            { id: "INT-001", loc: "5th Ave", cars: 45, wait: 35 },
+            { id: "INT-002", loc: "42nd St", cars: 120, wait: 145 },
+            { id: "INT-003", loc: "Expressway", cars: 85, wait: 95 },
+            { id: "INT-004", loc: "Silicon Blvd", cars: 15, wait: 12 },
+            { id: "INT-005", loc: "Metro Hub", cars: 60, wait: 50 }
+        ];
+
+        function render() {
+            let body = document.getElementById('table-body');
+            body.innerHTML = '';
+            let alertVisible = false;
+            data.forEach(i => {
+                if(i.wait > 120) alertVisible = true;
+                body.innerHTML += `<tr><td>${i.id}</td><td>${i.loc}</td><td>${i.cars}</td><td>${i.wait}s</td><td>Active</td></tr>`;
+            });
+            document.getElementById('alert').style.display = alertVisible ? 'block' : 'none';
+        }
+        render();
+    </script>
+</body>
+</html>
